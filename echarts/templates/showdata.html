@@ -4,27 +4,29 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='CSS/regist.css') }}"  >
     <script src="{{ url_for('static', filename='echarts.min.js') }}"></script>
     <meta http-equiv="refresh" content="3">
+{#    设置刷新刷屏幕#}
 {% endblock %}
 
 
 {% block main %}
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main2" style="width: 800px;height:500px;margin: 0 auto;"></div>
+<div id="main2" style="width: 300px;height:300px;margin: 0 auto;"></div>
+<div id="main3" style="width: 900px;height:500px;margin: 0 auto;"></div>
 
 <script type="text/javascript">
 
     var myChart2 = echarts.init(document.getElementById('main2'));
+    var myChart3 = echarts.init(document.getElementById('main3'));
 
     var   option2 = {
                 title : {
-                    text: '未来一周气温变化',
-                    subtext: '纯属虚构'
+                    text: '猪场温湿度监控系统',
                 },
             tooltip : {
                 trigger: 'axis'
             },
             legend: {
-                data:['最高气温','最低气温']
+                data:['温度','湿度']
             },
             toolbox: {
                 show : true,
@@ -32,7 +34,7 @@
                     mark : {show: true},
                     dataView : {show: true, readOnly: false},
                     magicType : {show: true, type: ['line', 'bar']},
-                    restore : {show: true},
+                    restore : {show: false,title : '还原'},
                     saveAsImage : {show: true}
                 }
             },
@@ -41,22 +43,31 @@
                 {
                     type : 'category',
                     boundaryGap : false,
-                    data : ['周一','周二','周三','周四','周五','周六','周日']
+                    {#data : {{ time }}#}
                 }
             ],
             yAxis : [
                 {
                     type : 'value',
+                    name:"温度",
                     axisLabel : {
                         formatter: '{value} °C'
+                    }
+                },
+                {
+                    type : 'value',
+                    name:"湿度",
+                    axisLabel : {
+                        formatter: '{value}%'
                     }
                 }
             ],
             series : [
                 {
-                    name:'最高气温',
+                    name:'温度',
+                    yAxisIndex: 1,
                     type:'line',
-                    data:{{ datapoints }},
+                    data:{{ humi }},
                     markPoint : {
                         data : [
                             {type : 'max', name: '最大值'},
@@ -70,9 +81,9 @@
                     }
                 },
                 {
-                    name:'最低气温',
+                    name:'湿度',
                     type:'line',
-                    data:[1, -2, 2, 5, 3, 2, 0],
+                    data:{{ temp }},
                     markPoint : {
                         data : [
                             {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
@@ -87,6 +98,32 @@
             ]
         };
     myChart2.setOption(option2);
+
+    var option3 = {
+    tooltip : {
+        formatter: "{a} <br/>{b} : {c}%"
+    },
+    toolbox: {
+        feature: {
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+    series: [
+        {
+            name: '业务指标',
+            type: 'gauge',
+            detail: {formatter:'{value}%'},
+            data: [{value: {{ humi[0] }}, name: '完成率'}]
+        }
+    ]
+};
+
+setInterval(function () {
+    option.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;
+    myChart.setOption(option, true);
+},2000);;
+    myChart3.setOption(option3);
 
 </script>
 
