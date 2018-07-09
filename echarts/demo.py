@@ -11,7 +11,7 @@ app = Flask(__name__)
 @app.route('/')
 def my_echart():
     # 在浏览器上渲染my_templaces.html模板
-    return render_template('my_template.html')
+    return render_template('Dashboard.html')
 
 @app.route('/login/',methods=["GET","POST"])  #
 def login():
