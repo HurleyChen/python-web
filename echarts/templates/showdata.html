@@ -1,99 +1,361 @@
 {% extends "base.html" %}
 {% block title %}登陆{% endblock %}
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static',filename='CSS/regist.css') }}"  >
+    <link rel="stylesheet" href="{{ url_for('static',filename='CSS/showdata.css') }}"  >
     <script src="{{ url_for('static', filename='echarts.min.js') }}"></script>
-    <meta http-equiv="refresh" content="3">
+{#    <meta http-equiv="refresh" content="3">#}
+{#    设置刷新刷屏幕#}
 {% endblock %}
 
 
 {% block main %}
     <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-<div id="main2" style="width: 800px;height:500px;margin: 0 auto;"></div>
+
+<div style="width: 1350px;height:190px;">
+        <div  id="pic1" style="width: 190px;height:190px;float:right"></div>
+        <div  id="pic2" style="width: 190px;height:190px;float:right"></div>
+        <div  id="pic3" style="width: 190px;height:190px;float:right"></div>
+        <div  id="pic4" style="width: 190px;height:190px;float:right"></div>
+</div>
+<div style="width: 1350px;height:190px;">
+        <div  id="pic5" style="width: 190px;height:190px;float:right"></div>
+        <div  id="pic6" style="width: 190px;height:190px;float:right"></div>
+        <div  id="pic7" style="width: 190px;height:190px;float:right"></div>
+</div>
+    <div style="width: 1350px;height:200px;">
+
+        <div  id="zhexian1" style="width: 1350px;height:200px;float:left"></div>
+    </div>
+
 
 <script type="text/javascript">
 
-    var myChart2 = echarts.init(document.getElementById('main2'));
+    var mypic1 = echarts.init(document.getElementById('pic1'));
+    var mypic2 = echarts.init(document.getElementById('pic2'));
+    var mypic3 = echarts.init(document.getElementById('pic3'));
+    var mypic4 = echarts.init(document.getElementById('pic4'));
+    var mypic5 = echarts.init(document.getElementById('pic5'));
+    var mypic6 = echarts.init(document.getElementById('pic6'));
+    var mypic7 = echarts.init(document.getElementById('pic7'));
 
-    var   option2 = {
-                title : {
-                    text: '未来一周气温变化',
-                    subtext: '纯属虚构'
-                },
-            tooltip : {
-                trigger: 'axis'
+    var myzhexian_1 = echarts.init(document.getElementById('zhexian1'));
+
+   var option_zhexian1 = {
+         title: {
+        text: '最近温度变化'},
+       xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            {#data:[11, 11, 15, 13, 12, 13, 10],#}
+            data: {{ humi}},
+            type: 'line',
+        }]
+    };
+   myzhexian_1.setOption(option_zhexian1);
+
+    var option_pic1= {
+    tooltip : {
+        formatter: "{a} <br/>{b} : {c}%",
+    },
+    toolbox: {
+        feature: {
+            restore: {},
+            saveAsImage: {},
+        },
+
+    },
+
+    series: [
+        {
+            name: '业务指标',
+            type: 'gauge',
+            splitNumber:5,
+            detail: {formatter:'{value}%'},
+            data: [{value: {{ humi[0] }}, name: '温度',}],
+            title : {
+                {#fontWeight: 'bolder',#}
+                fontSize: 20,
+                offsetCenter: [0, '-120%'],
+                {#fontStyle: 'italic'#}
             },
-            legend: {
-                data:['最高气温','最低气温']
+            detail:{fontSize:20},
+            axisLabel:{fontSize:10}
+
+        }
+    ]
+};
+    mypic1.setOption(option_pic1);
+
+    var option_pic2 = {
+    tooltip : {
+        formatter: "{a} <br/>{b} : {c}%"
+    },
+    toolbox: {
+        feature: {
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+        series: [
+        {
+            name: '业务指标',
+            type: 'gauge',
+            splitNumber:5,
+            detail: {formatter:'{value}%'},
+            data: [{value: {{ humi[0] }}, name: '温度',}],
+            title : {
+                {#fontWeight: 'bolder',#}
+                fontSize: 20,
+                offsetCenter: [0, '-120%'],
+                {#fontStyle: 'italic'#}
             },
-            toolbox: {
-                show : true,
-                feature : {
-                    mark : {show: true},
-                    dataView : {show: true, readOnly: false},
-                    magicType : {show: true, type: ['line', 'bar']},
-                    restore : {show: true},
-                    saveAsImage : {show: true}
-                }
+            detail:{fontSize:20},
+            axisLabel:{fontSize:10}
+
+        }
+    ]
+};
+    mypic2.setOption(option_pic2);
+
+    var option_pic3 = {
+    tooltip : {
+        formatter: "{a} <br/>{b} : {c}%"
+    },
+    toolbox: {
+        feature: {
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+        series: [
+        {
+            name: '业务指标',
+            type: 'gauge',
+            splitNumber:5,
+            detail: {formatter:'{value}%'},
+            data: [{value: {{ humi[0] }}, name: '温度',}],
+            title : {
+                {#fontWeight: 'bolder',#}
+                fontSize: 20,
+                offsetCenter: [0, '-120%'],
+                {#fontStyle: 'italic'#}
             },
-            calculable : true,
-            xAxis : [
-                {
-                    type : 'category',
-                    boundaryGap : false,
-                    data : ['周一','周二','周三','周四','周五','周六','周日']
-                }
-            ],
-            yAxis : [
-                {
-                    type : 'value',
-                    axisLabel : {
-                        formatter: '{value} °C'
-                    }
-                }
-            ],
-            series : [
-                {
-                    name:'最高气温',
-                    type:'line',
-                    data:{{ datapoints }},
-                    markPoint : {
-                        data : [
-                            {type : 'max', name: '最大值'},
-                            {type : 'min', name: '最小值'}
-                        ]
-                    },
-                    markLine : {
-                        data : [
-                            {type : 'average', name: '平均值'}
-                        ]
-                    }
-                },
-                {
-                    name:'最低气温',
-                    type:'line',
-                    data:[1, -2, 2, 5, 3, 2, 0],
-                    markPoint : {
-                        data : [
-                            {name : '周最低', value : -2, xAxis: 1, yAxis: -1.5}
-                        ]
-                    },
-                    markLine : {
-                        data : [
-                            {type : 'average', name : '平均值'}
-                        ]
-                    }
-                }
-            ]
-        };
-    myChart2.setOption(option2);
+            detail:{fontSize:20},
+            axisLabel:{fontSize:10}
+
+        }
+    ]
+};
+    mypic3.setOption(option_pic3);
+
+    var option_pic4= {
+    tooltip : {
+        formatter: "{a} <br/>{b} : {c}%"
+    },
+    toolbox: {
+        feature: {
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+        series: [
+        {
+            name: '业务指标',
+            type: 'gauge',
+            splitNumber:5,
+            detail: {formatter:'{value}%'},
+            data: [{value: {{ humi[0] }}, name: '温度',}],
+            title : {
+                {#fontWeight: 'bolder',#}
+                fontSize: 20,
+                offsetCenter: [0, '-120%'],
+                {#fontStyle: 'italic'#}
+            },
+            detail:{fontSize:20},
+            axisLabel:{fontSize:10}
+
+        }
+    ]
+};
+    mypic4.setOption(option_pic4);
+
+    var option_pic5 = {
+    tooltip : {
+        formatter: "{a} <br/>{b} : {c}%"
+    },
+    toolbox: {
+        feature: {
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+        series: [
+        {
+            name: '业务指标',
+            type: 'gauge',
+            splitNumber:5,
+            detail: {formatter:'{value}%'},
+            data: [{value: {{ humi[0] }}, name: '温度',}],
+            title : {
+                {#fontWeight: 'bolder',#}
+                fontSize: 20,
+                offsetCenter: [0, '-120%'],
+                {#fontStyle: 'italic'#}
+            },
+            detail:{fontSize:20},
+            axisLabel:{fontSize:10}
+
+        }
+    ]
+};
+    mypic5.setOption(option_pic5);
+
+    var option_pic6 = {
+    tooltip : {
+        formatter: "{a} <br/>{b} : {c}%"
+    },
+    toolbox: {
+        feature: {
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+        series: [
+        {
+            name: '业务指标',
+            type: 'gauge',
+            splitNumber:5,
+            detail: {formatter:'{value}%'},
+            data: [{value: {{ humi[0] }}, name: '温度',}],
+            title : {
+                {#fontWeight: 'bolder',#}
+                fontSize: 20,
+                offsetCenter: [0, '-120%'],
+                {#fontStyle: 'italic'#}
+            },
+            detail:{fontSize:20},
+            axisLabel:{fontSize:10}
+
+        }
+    ]
+};
+    mypic6.setOption(option_pic6);
+
+    var option_pic7 = {
+    tooltip : {
+        formatter: "{a} <br/>{b} : {c}%"
+    },
+    toolbox: {
+        feature: {
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+        series: [
+        {
+            name: '业务指标',
+            type: 'gauge',
+            splitNumber:5,
+            detail: {formatter:'{value}%'},
+            data: [{value: {{ humi[0] }}, name: '温度',}],
+            title : {
+                {#fontWeight: 'bolder',#}
+                fontSize: 20,
+                offsetCenter: [0, '-120%'],
+                {#fontStyle: 'italic'#}
+            },
+            detail:{fontSize:20},
+            axisLabel:{fontSize:10}
+
+        }
+    ]
+};
+    mypic7.setOption(option_pic7);
+
+{#    setInterval(function () {#}
+{#    option_pic1.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;#}
+{#    option_pic2.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;#}
+{#    option_pic3.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;#}
+{#    option_pic4.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;#}
+{#    option_pic5.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;#}
+{#    option_pic6.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;#}
+{#    option_pic7.series[0].data[0].value = (Math.random() * 100).toFixed(2) - 0;#}
+{#    mypic1.setOption(option_pic1);#}
+{#    mypic2.setOption(option_pic2);#}
+{#    mypic3.setOption(option_pic3);#}
+{#    mypic4.setOption(option_pic4);#}
+{#    mypic5.setOption(option_pic5);#}
+{#    mypic6.setOption(option_pic6);#}
+{#    mypic7.setOption(option_pic7);#}
+{#},2000);#}
 
 </script>
 
 
 
 
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="jumbotron">
+				<h1>
+					猪场养殖监控系统
+				</h1>
 
+			</div>
+		</div>
+	</div>
+	<div class="row clearfix" style="width: 200px;height:1000px;float:left">
+		<div class="col-md-6 column" style="width: 200px;height:1000px;float:left">
+			<div class="list-group" style="width: 200px;height:1000px;float:left">
+				 <a href="#" class="list-group-item active">Home</a>
+				<div class="list-group-item">
+                    <a href="#">首页</a>
+				</div>
+				<div class="list-group-item">
+                    <a href="#">首页</a>
+				</div>
+                <div class="list-group-item">
+                    <a href="#">首页</a>
+				</div>
+				<div class="list-group-item">
+					<h4 class="list-group-item-heading">
+						<a href="#">首页</a>
+					</h4>
+					<p class="list-group-item-text">
+						...
+					</p>
+				</div>
+				<div class="list-group-item">
+					 <span class="badge">14</span> Help
+				</div> <a class="list-group-item active"> <span class="badge">14</span> Help</a>
+			</div>
+		</div>
+		<div class="col-md-6 column">
+			<div class="row clearfix">
+				<div class="col-md-4 column">
+				</div>
+				<div class="col-md-4 column">
+				</div>
+				<div class="col-md-4 column">
+				</div>
+			</div>
+			<div class="row clearfix">
+				<div class="col-md-4 column">
+				</div>
+				<div class="col-md-4 column">
+				</div>
+				<div class="col-md-4 column">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 
 {% endblock %}
